@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react";
 import { analyzePsoriasis } from "../../apis/psoriasisApi";
 import PsoriasisUpload from "../../components/module/PsoriasisUpload";
 import PsoriasisResult from "../../components/module/PsoriasisResult";
+import EvaluationTabs from "../../components/module/evaluation/EvaluationTabs";
 
 const RESEARCH_GAPS = [
   {
@@ -164,7 +165,10 @@ export default function PsoriasisHome() {
 
       <section className="mx-auto max-w-5xl px-4 pb-24 sm:px-6">
         {result ? (
-          <PsoriasisResult result={result} onReset={handleReset} />
+          <>
+            <PsoriasisResult result={result} onReset={handleReset} />
+            <EvaluationTabs />
+          </>
         ) : (
           <PsoriasisUpload onAnalyze={handleAnalyze} loading={loading} />
         )}
