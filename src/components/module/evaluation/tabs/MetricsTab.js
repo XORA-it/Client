@@ -17,7 +17,7 @@ const fairnessIoU = [
 ];
 
 const SectionHeading = ({ children }) => (
-  <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-400">{children}</h3>
+  <h3 className="mb-3 text-sm font-semibold tracking-wide uppercase text-slate-400">{children}</h3>
 );
 
 export default function MetricsTab() {
@@ -39,7 +39,7 @@ export default function MetricsTab() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <MetricCard icon={PercentIcon} value="77.4%" label="Accuracy" caption="41 of 53 test images classified correctly" />
           <div className="rounded-2xl border border-[#00B4D8]/15 bg-[#0d1f33] p-5 sm:col-span-2">
-            <div className="mb-3 flex items-center gap-2">
+            <div className="flex items-center gap-2 mb-3">
               <ChartBarIcon className="h-4 w-4 text-[#00B4D8]" />
               <span className="text-sm font-medium text-slate-200">Per-class F1 score</span>
             </div>
@@ -50,7 +50,7 @@ export default function MetricsTab() {
 
       {/* Fairness - key contribution */}
       <section className="rounded-2xl border-2 border-[#00B4D8]/50 bg-[#00B4D8]/5 p-5 sm:p-6">
-        <div className="mb-4 flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3 mb-4">
           <span className="inline-flex items-center gap-2 rounded-full border border-[#00B4D8]/40 bg-[#00B4D8]/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#00B4D8]">
             Key Contribution
           </span>
@@ -61,9 +61,7 @@ export default function MetricsTab() {
 
         <GroupedBars items={fairnessIoU} />
 
-        <p className="mt-1 text-center text-xs text-slate-400">
-          *Medium based on only 3 test images - limited sample
-        </p>
+       
 
         <p className="mt-4 border-t border-[#00B4D8]/10 pt-4 text-sm leading-relaxed text-slate-300">
           Disease-only IoU excludes Normal (blank-mask) images, which trivially score ~1.0 and
