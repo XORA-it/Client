@@ -287,7 +287,7 @@ export default function PsoriasisResult({ result, onReset }) {
           <span className="font-medium text-white">
             {result.skin_tone_group || "Unspecified"} skin tone
           </span>{" "}
-          detected — XORA uses this to keep results fair and accurate for
+          detected- XORA uses this to keep results fair and accurate for
           every skin tone.
         </p>
       </div>

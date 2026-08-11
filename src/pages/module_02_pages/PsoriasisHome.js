@@ -1,7 +1,9 @@
 import React, { useState, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { analyzePsoriasis } from "../../apis/psoriasisApi";
 import PsoriasisUpload from "../../components/module/PsoriasisUpload";
 import PsoriasisResult from "../../components/module/PsoriasisResult";
+import { ChartBarIcon } from "../../components/module/evaluation/icons";
 
 const RESEARCH_GAPS = [
   {
@@ -130,6 +132,13 @@ export default function PsoriasisHome() {
           An attention-driven deep learning pipeline for detecting psoriasis
           lesions and estimating severity across diverse skin tones.
         </p>
+        <Link
+          to="/module-2/psoriasis/evaluation"
+          className="mt-8 inline-flex items-center gap-2 rounded-lg bg-[#00B4D8] px-5 py-2.5 text-sm font-semibold text-[#0A1628] transition hover:bg-[#00cfff]"
+        >
+          <ChartBarIcon className="h-4 w-4" />
+          Research &amp; Evaluation
+        </Link>
       </section>
 
       <section className="mx-auto max-w-5xl px-4 pb-16 sm:px-6">
