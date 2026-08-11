@@ -32,13 +32,13 @@ const normalizeAcneResult = (result) => {
     }
 
     if (typeof value === "object") {
-      if (value === null) return "Not available";
+      if (value === null) return "";
 
       const entries = Object.entries(value).filter(
         ([, itemValue]) => itemValue !== null && itemValue !== undefined && itemValue !== ""
       );
 
-      if (entries.length === 0) return "Not available";
+      if (entries.length === 0) return "";
 
       if (entries.every(([, itemValue]) => typeof itemValue === "number" || typeof itemValue === "string")) {
         return entries
@@ -59,15 +59,8 @@ const normalizeAcneResult = (result) => {
     key.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
 
   const label =
-    getFirstValue([
-      "prediction_label",
-      "predicted_label",
-      "label",
-      "prediction",
-      "class",
-      "predicted_class",
-      "result",
-    ]) || "Acne Analysis";
+    getFirstValue(["iga_label", "prediction_label", "predicted_label", "label", "prediction", "class", "predicted_class", "result"]) ||
+    "Acne Analysis";
 
   const confidence =
     getFirstValue(["confidence", "confidence_score", "score", "probability"]) || null;
@@ -84,36 +77,10 @@ const normalizeAcneResult = (result) => {
   const detailEntries = entries
     .filter(([key]) => {
       const normalized = key.toLowerCase();
-      return ![
-        "prediction_label",
-        "predicted_label",
-        "label",
-        "prediction",
-        "class",
-        "predicted_class",
-        "result",
-        "confidence",
-        "confidence_score",
-        "score",
-        "probability",
-        "severity",
-        "severity_level",
-        "risk_level",
-        "stage",
-        "recommendation",
-        "advice",
-        "notes",
-        "message",
-        "summary",
-        "description",
-        "explanation",
-        "detail",
-        "analysis",
-        "lesions",
-      ].includes(normalized);
+      return ["iga_label", "iga_grade"].includes(normalized);
     })
     .map(([key, value]) => ({
-      label: formatLabel(key),
+      label: key.toLowerCase().includes("grade") ? "IGA Grade" : "IGA Label",
       value: formatValue(value),
     }));
 
@@ -139,7 +106,7 @@ const formatConfidence = (value) => {
     return `${Math.round(percentage)}%`;
   }
 
-  return value || "Not available";
+  return value || "";
 };
 
 export default function AcneHome() {
@@ -199,9 +166,6 @@ export default function AcneHome() {
         <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
           Acne Detection
         </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-base text-slate-400 sm:text-lg">
-          Upload a facial image to send it to your research backend for acne analysis.
-        </p>
       </section>
 
       <section className="mx-auto max-w-5xl px-4 pb-24 sm:px-6">
@@ -215,9 +179,11 @@ export default function AcneHome() {
                 <h2 className="mt-2 text-2xl font-semibold text-white">
                   {summary.label}
                 </h2>
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">
-                  {summary.summaryText || "Your acne analysis result is ready below."}
-                </p>
+                {summary.summaryText && (
+                  <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">
+                    {summary.summaryText}
+                  </p>
+                )}
               </div>
               <button
                 type="button"
@@ -228,34 +194,9 @@ export default function AcneHome() {
               </button>
             </div>
 
-            <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-              <div className="rounded-2xl border border-[#00B4D8]/20 bg-[#0A1628] p-4">
-                <p className="text-sm text-slate-400">Prediction</p>
-                <p className="mt-2 text-lg font-semibold text-white">{summary.label}</p>
-              </div>
-              <div className="rounded-2xl border border-[#00B4D8]/20 bg-[#0A1628] p-4">
-                <p className="text-sm text-slate-400">Confidence</p>
-                <p className="mt-2 text-lg font-semibold text-white">
-                  {formatConfidence(summary.confidence)}
-                </p>
-              </div>
-              <div className="rounded-2xl border border-[#00B4D8]/20 bg-[#0A1628] p-4">
-                <p className="text-sm text-slate-400">Severity</p>
-                <p className="mt-2 text-lg font-semibold text-white">
-                  {summary.severity || "Not specified"}
-                </p>
-              </div>
-              <div className="rounded-2xl border border-[#00B4D8]/20 bg-[#0A1628] p-4">
-                <p className="text-sm text-slate-400">Recommendation</p>
-                <p className="mt-2 text-sm font-medium leading-6 text-slate-200">
-                  {summary.recommendation || "Please consult a dermatologist for a full review."}
-                </p>
-              </div>
-            </div>
-
-            {summary.detailEntries.length > 0 && (
+            {summary.detailEntries.length > 0 ? (
               <div className="mt-6 rounded-2xl border border-[#00B4D8]/15 bg-[#0A1628] p-5">
-                <h3 className="text-lg font-semibold text-white">Additional Details</h3>
+                <h3 className="text-lg font-semibold text-white">Acne Detection Summary</h3>
                 <div className="mt-4 grid gap-3 md:grid-cols-2">
                   {summary.detailEntries.map((entry) => {
                     const valueContent =
@@ -292,6 +233,10 @@ export default function AcneHome() {
                     );
                   })}
                 </div>
+              </div>
+            ) : (
+              <div className="mt-6 rounded-2xl border border-[#00B4D8]/15 bg-[#0A1628] p-5">
+                <h3 className="text-lg font-semibold text-white">Additional Details</h3>
               </div>
             )}
           </div>
