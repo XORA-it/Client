@@ -1,4 +1,5 @@
 import axios from "axios";
+import { MELANOMA_DEMO_ENABLED, demoAnalyzeMelanoma, demoMelanomaEvaluation } from "./melanomaDemo";
 
 // Override this in .env for a deployed or separately hosted API.
 export const MELANOMA_API_URL =
@@ -6,11 +7,13 @@ export const MELANOMA_API_URL =
 
 export function backendUrl(path) {
   if (!path) return "#";
-  return path.startsWith("http") ? path : `${MELANOMA_API_URL}${path}`;
+  return path.startsWith("http") || path.startsWith("data:") ? path : `${MELANOMA_API_URL}${path}`;
 }
 
 export async function analyzeMelanoma(imageFile) {
   if (!imageFile) throw new Error("Please select an image before starting analysis.");
+
+  if (MELANOMA_DEMO_ENABLED) return demoAnalyzeMelanoma(imageFile);
 
   const formData = new FormData();
   // FastAPI's analyze_image function expects this exact field name.
@@ -35,6 +38,7 @@ export async function analyzeMelanoma(imageFile) {
 }
 
 export async function getMelanomaEvaluation() {
+  if (MELANOMA_DEMO_ENABLED) return demoMelanomaEvaluation();
   try {
     const response = await axios.get(`${MELANOMA_API_URL}/api/evaluation`, { timeout: 30000 });
     if (!response.data?.success) throw new Error("The evaluation service did not return data.");
