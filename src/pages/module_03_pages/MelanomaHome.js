@@ -81,7 +81,7 @@ function MelanomaResult({ result, onReset }) {
       </div>
 
       <div className="mt-4 rounded-xl bg-[#0A1628] p-4 text-sm text-slate-300"><span className="font-medium text-white">{skinTone.detected_skin_tone || "Unspecified"} skin tone</span> detected · ITA score: {skinTone.ita_score ?? "—"} · Model accuracy: {skinTone.model_accuracy || "—"}</div>
-      <a href={backendUrl(result.urls?.pdf_report)} target="_blank" rel="noreferrer" className="mt-5 inline-flex rounded-lg border border-[#00B4D8]/50 px-4 py-2 text-sm font-medium text-[#00B4D8] transition hover:bg-[#00B4D8]/10">Download PDF report</a>
+      {result.urls?.pdf_report && <a href={backendUrl(result.urls.pdf_report)} target="_blank" rel="noreferrer" className="mt-5 inline-flex rounded-lg border border-[#00B4D8]/50 px-4 py-2 text-sm font-medium text-[#00B4D8] transition hover:bg-[#00B4D8]/10">Download PDF report</a>}
       <p className="mt-6 border-t border-[#00B4D8]/10 pt-4 text-center text-xs leading-relaxed text-slate-500">This is an AI screening tool, not a medical diagnosis. Always consult a certified dermatologist for a full evaluation.</p>
     </div>
   );

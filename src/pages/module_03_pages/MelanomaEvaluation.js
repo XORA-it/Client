@@ -101,6 +101,7 @@ export default function MelanomaEvaluation() {
             )}
           </section>
           <DataTable title="Overall metrics" rows={evaluation.overall_metrics} />
+          <DataTable title="Metrics by skin tone" rows={evaluation.skin_tone_metrics} />
           <section className="mt-8">
             <h2 className="text-lg font-semibold">Evaluation plots</h2>
             {evaluation.evaluation_plots?.length ? (
